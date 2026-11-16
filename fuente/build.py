@@ -20,9 +20,9 @@ pub=os.environ.get('PUBLIC_URL','https://raveholding.github.io/'+('AlmacenRAVE/'
 import datetime
 if KINI: pub=os.environ.get('PUBLIC_URL','https://raveholding.github.io/KiniDistribuidoraDemo/')
 if PROFILE=='v3': pub=os.environ.get('PUBLIC_URL','https://raveholding.github.io/raveV3/')
-# V27.6 · barber = Bacano Show Room · Barber Shop (raveholding/Bacano)
-if PROFILE=='barber': pub=os.environ.get('PUBLIC_URL','https://raveholding.github.io/Bacano/')
-build={'ver':datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d %H:%M')+' UTC','variant':V,'db':'rave-almacenrave-v1' if V=='cliente' else {'kini':'rave-kini-demo-v2','solo':'rave-solo-demo-v1','v3':'rave-v3-demo-v2','barber':'rave-bacano-demo-v1'}.get(PROFILE,'rave-cliente-v3'),'publicUrl':pub}
+# V27.7 · barber = demo genérica «Mi Barbería» (raveholding/VB-Demo-Salud.Estetica)
+if PROFILE=='barber': pub=os.environ.get('PUBLIC_URL','https://raveholding.github.io/VB-Demo-Salud.Estetica/')
+build={'ver':datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d %H:%M')+' UTC','variant':V,'db':'rave-almacenrave-v1' if V=='cliente' else {'kini':'rave-kini-demo-v2','solo':'rave-solo-demo-v1','v3':'rave-v3-demo-v2','barber':'vb-demo-salud-estetica-v1'}.get(PROFILE,'rave-cliente-v3'),'publicUrl':pub}
 if PROFILE: build['profile']=PROFILE
 cfg='<script>window.RAVE_BUILD=%s;window.RAVE_CLOUD=%s;</script>\n'%(json.dumps(build),json.dumps({'url':url,'key':key,'slug':slug}))
 head=B('p1-head.html')

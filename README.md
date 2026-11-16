@@ -1,6 +1,6 @@
-# Bacano · Show Room · Barber Shop · Sistema VB (demo)
+# Mi Barbería · Barbería y estética · Sistema VB (demo)
 
-Demo de evaluación del **Sistema Vincular Business V26.65** (la misma base que Almacén RAVE, esqueleto V27.2) con la **capa de barbería** de Bacano (Salta Capital, sucursales Centro y Norte).
+Demo de evaluación del **Sistema Vincular Business V26.65** (la misma base que Almacén RAVE, esqueleto V27.2) con la **capa de barbería** de Mi Barbería (Salta Capital, sucursales Centro y Norte).
 Un solo archivo (`index.html`): página pública adelante y panel del equipo en `#acceso`.
 
 **Demo en línea:** https://raveholding.github.io/VB-Demo-Salud.Estetica/
@@ -24,7 +24,7 @@ Un solo archivo (`index.html`): página pública adelante y panel del equipo en 
 La demo anterior era una aplicación aparte. Ahora corre **sobre el Sistema VB completo y actualizado**, así que suma todo lo nuevo del núcleo:
 - **Diseño V27.2:** barra lateral por secciones con **Vender POS [F1]**, búsqueda global **Ctrl + K**, campana de avisos, avisos con número en el menú, **tema claro/oscuro**, panel «Hoy» en el Resumen y ayuda de una línea en cada pantalla.
 - **Gestión de caja completa y multisucursal:** una caja por sucursal (Centro y Norte) más la caja principal del dueño, tablero del turno, pagos mixtos, vuelto, Fiado / Cuenta corriente, recargos por medio de pago, Corte X / Corte Z sellados, historial verificable y traspasos entre cajas.
-- **Club Bacano completo:** sellos (cada visita cobrada suma uno, 10 = corte gratis; los productos no suman), niveles por consumo, cumpleaños, monedero, gift cards, cupones (BACANO10, VUELVE15, CUMPLE20) y la membresía **Bacano Pass**.
+- **Club Mi Barbería completo:** sellos (cada visita cobrada suma uno, 10 = corte gratis; los productos no suman), niveles por consumo, cumpleaños, monedero, gift cards, cupones (PRIMERA10, VUELVE15, CUMPLE20) y la membresía **Pase Mi Barbería**.
 - **Recursos Humanos:** legajos de los 11 integrantes, fichaje por PIN, QR, NFC y geocerca, turnos de lunes a sábado (domingo cerrado), licencias con aprobación, documentos, reclutamiento, portal del empleado.
 - **Atención al cliente** (CRM), **compras y proveedores** con cuenta corriente, presupuestos, mermas, importar/exportar y auditoría encadenada.
 
@@ -33,11 +33,11 @@ La demo anterior era una aplicación aparte. Ahora corre **sobre el Sistema VB c
 - **Agenda de turnos:** grilla por día, sucursal y barbero, con estados (a confirmar, confirmado, en el local, atendiendo, atendido, no vino, cancelado), confirmación y recordatorio por WhatsApp, Google Calendar, reprogramación y control de superposición.
 - **Turnero web en 4 pasos** (servicios → sucursal y barbero → día y horario libre → datos): el turno entra solo a la agenda como *a confirmar*.
 - **Cobro en Vender:** el turno pasa a Vender con sus servicios, la propina y el socio; entra en la caja de la sucursal, guarda quién atendió, deja el turno atendido y suma el sello.
-- **Barberos y liquidación:** alquiler de silla (monto fijo mensual) o comisión por corte (% configurable sólo por el administrador); propinas 100 % al barbero, productos 100 % a Bacano; liquidación con pago desde la caja y exportación a Excel.
-- **Ranking y trazabilidad:** servicios, facturación, aporte a Bacano, ticket promedio, clientes que vuelven, servicios más pedidos y Centro vs. Norte.
+- **Barberos y liquidación:** alquiler de silla (monto fijo mensual) o comisión por corte (% configurable sólo por el administrador); propinas 100 % al barbero, productos 100 % a Mi Barbería; liquidación con pago desde la caja y exportación a Excel.
+- **Ranking y trazabilidad:** servicios, facturación, aporte a Mi Barbería, ticket promedio, clientes que vuelven, servicios más pedidos y Centro vs. Norte.
 - **Stock por sucursal:** cada venta descuenta de la sucursal que cobró; transferencias, conteos, ingresos e historial; pedido de reposición por proveedor por WhatsApp.
 - **Campañas por WhatsApp** que se arman solas: recordatorio de mañana, recuperar inactivos, cumpleaños, a un sello del premio, segunda visita y pedir reseña (sólo a quienes aceptaron mensajes).
-- **Página pública:** servicios, equipo, productos con disponibilidad por sucursal (pedido por WhatsApp para retirar), Club Bacano (alta y tarjeta) y sucursales con «Cómo llegar».
+- **Página pública:** servicios, equipo, productos con disponibilidad por sucursal (pedido por WhatsApp para retirar), Club Mi Barbería (alta y tarjeta) y sucursales con «Cómo llegar».
 
 ## Recorrido sugerido
 1. Abrí la página pública y **reservá un turno** con un barbero de Norte.

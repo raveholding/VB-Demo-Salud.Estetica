@@ -5,7 +5,7 @@ import os,re,json,base64,io
 HERE=os.path.dirname(os.path.abspath(__file__))
 def _logo():
     from PIL import Image
-    src=os.path.join(HERE,'bacano-logo.jpg')
+    src=os.path.join(HERE,'generic-logo.jpg')  # V27.7 · demo genérica de Vincular Business
     im=Image.open(src).convert('RGB')
     b0=io.BytesIO();im.save(b0,'JPEG',quality=88,optimize=True)
     menu='data:image/jpeg;base64,'+base64.b64encode(b0.getvalue()).decode()
@@ -93,4 +93,10 @@ def brand(h):
     e+=1
     doc=open(os.path.join(HERE,'p11-pub-barber.html'),encoding='utf8').read().replace('__LOGO__',menu)
     h=h[:k]+json.dumps(doc,ensure_ascii=False).replace('</','<\\/')+h[e:]
+    # V27.7 · demo genérica de Vincular Business: sin la marca, direcciones ni teléfonos de un cliente real (sólo textos visibles)
+    for o,n in [('Bacano Show Room · Barber Shop','Mi Barbería · Barbería y estética'),('SHOW ROOM · BARBER SHOP','BARBERÍA · ESTÉTICA'),('Show Room · Barber Shop','Barbería y estética'),
+                ('Bacano Pass','Pase Mi Barbería'),('Bacano Barber Shop','Mi Barbería'),('BACANO10','PRIMERA10'),('BACANO','MI BARBERÍA'),('Bacano','Mi Barbería'),
+                ('bacano-liquidacion','liquidacion-barberos'),('Balcarce 480','Av. Ejemplo 123'),('Av. Bolivia 3150','Calle Ejemplo 456'),
+                ('5493874215480','5493870000001'),('5493874393150','5493870000002')]:
+        h=h.replace(o,n)
     return h
