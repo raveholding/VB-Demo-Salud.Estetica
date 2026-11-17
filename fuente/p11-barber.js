@@ -75,7 +75,7 @@ const bcIsTip=p=>!!(p&&p.svc&&p.svc.tip);
 
 /* ---------- base de la demo (después de soloBase; antes de RR. HH.) ---------- */
 function barberBase(d){if(typeof window==='undefined'||!window.__bcReady)return d;
- d.tenant=Object.assign({},d.tenant,{name:'Bacano',legal:'Bacano Show Room · Barber Shop (demo de ejemplo)',slogan:'Show Room · Barber Shop · Salta',address:'Balcarce 480 y Av. Bolivia 3150, Salta Capital (datos de ejemplo)',wa:'5493874215480',phone:'',caja:1,regId:'bcr-centro',ig:'',fb:''});
+ d.tenant=Object.assign({},d.tenant,{name:'Bacano',legal:'Bacano Show Room · Barber Shop',cuit:'27-31245678-3',iva:'Responsable Monotributo (ejemplo)',slogan:'Show Room · Barber Shop · Salta',address:'Balcarce 480 y Av. Bolivia 3150, Salta Capital (datos de ejemplo)',wa:'5493874215480',phone:'(0387) 400-0480',caja:1,regId:'bcr-centro',ig:'',fb:''});
  d.menu=Object.assign({},d.menu,{title:'BACANO',sub:{es:'Show Room · Barber Shop',en:'Show Room · Barber Shop'},footer:{es:'Bacano · demo de evaluación',en:'Bacano · evaluation demo'},
   pitch:{es:'Tu corte, a tu hora. **Reservá online** en Centro o Norte.',en:'Your cut, your time. **Book online** in Centro or Norte.'},promo:{on:true,es:'**10 visitas = corte gratis** con el Club Bacano',en:'**10 visits = free cut** with Club Bacano'},mapQuery:'Bacano Barber Shop, Balcarce 480, Salta',mapUrl:'',reviewUrl:'',social:[],wifi:{on:false,ssid:'',pass:'',example:false}});
  const keep=d.rubros.filter(r=>r.kind==='cobr'||r.kind==='shared'||r.kind==='sysgen');
