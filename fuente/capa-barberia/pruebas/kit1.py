@@ -1,0 +1,33 @@
+import sys
+from playwright.sync_api import sync_playwright
+F=sys.argv[1];res=[]
+def chk(c,m):print(('OK   ' if c else 'FALLA ')+m);res.append(bool(c))
+with sync_playwright() as p:
+    b=p.chromium.launch(args=['--no-proxy-server']);pg=b.new_page(viewport={'width':390,'height':844});errs=[];pg.on('pageerror',lambda e:errs.append(str(e)[:200]))
+    pg.goto('file://'+F);pg.wait_for_timeout(2500);fr=pg.frame_locator('#pubframe');F2=pg.query_selector('#pubframe').content_frame()
+    chk(fr.locator('#vbk-me-fab').is_visible(),'botón «Mi cuenta»')
+    chk(fr.locator('#vbk-chat-fab').is_visible(),'chat «Escribinos»')
+    fr.locator('#vbk-me-fab').click();pg.wait_for_timeout(300)
+    t=fr.locator('#vbk-me').inner_text()
+    chk('Contacto' in t and 'Mis pedidos' not in t and 'WhatsApp' in t,'«Mi cuenta» con Contacto y App (sin pedidos con envío)')
+    fr.locator('#vbk-me .vbk-x').click()
+    fr.locator('#vbk-chat-fab').click();pg.wait_for_timeout(300);fr.locator('#vbk-cn').fill('Lu');fr.locator('#vbk-ct').fill('Hola, ¿turno hoy?');fr.locator('#vbk-chat .snd').click();pg.wait_for_timeout(500)
+    chk('turno hoy' in fr.locator('#vbk-chat .th').inner_text(),'el chat envía');fr.locator('#vbk-chat [data-x]').click()
+    F2.evaluate("document.getElementById('productos').scrollIntoView()");pg.wait_for_timeout(300)
+    F2.evaluate("(()=>{const b=[...document.querySelectorAll('[data-a=pq][data-v=\"1\"]')].find(x=>!x.disabled);b.click();})()");pg.wait_for_timeout(300)
+    chk(fr.locator('#pbar').is_visible(),'barra del pedido de productos')
+    fr.locator('#pdel').check();pg.wait_for_timeout(200)
+    chk(fr.locator('#pdir').is_visible() and 'envío a domicilio' in fr.locator('#pbar-t').inner_text(),'opción de envío a domicilio con dirección')
+    F2.evaluate("window.__op=[];window.open=function(u){window.__op.push(u);return null;}")
+    fr.locator('[data-a=psend]').click();pg.wait_for_timeout(300)
+    chk(not F2.evaluate("window.__op.filter(Boolean).length") and 'dirección' in fr.locator('#dlg').inner_text(),'pide la dirección antes de enviar')
+    fr.locator('[data-a=bclose]').click();pg.wait_for_timeout(200)
+    fr.locator('#pdir').fill('Belgrano 123, barrio Centro');fr.locator('[data-a=psend]').click();pg.wait_for_timeout(400)
+    u=F2.evaluate("window.__op.filter(Boolean)[0]||''")
+    from urllib.parse import unquote_plus as unquote
+    chk('Env' in unquote(u) and 'Belgrano 123' in unquote(u) and 'retirar' not in unquote(u),'el WhatsApp lleva la dirección de envío')
+    chk(F2.evaluate("document.documentElement.scrollWidth")<=390,'entra en el celular')
+    chk(not errs,'sin errores %s'%errs[:2])
+    pg.screenshot(path='/tmp/rave/salud_m.png')
+    b.close()
+print('%d/%d'%(sum(res),len(res)))

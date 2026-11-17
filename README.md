@@ -46,6 +46,12 @@ La demo anterior era una aplicación aparte. Ahora corre **sobre el Sistema VB c
 4. Mirá **Gestión de caja** (Corte X / Z), **Barberos y liquidación**, **Ranking** y **Stock por sucursal**.
 5. Ingresá como **Tomás (4444)** para ver la agenda y los números de un barbero.
 
+## Tienda online en la página pública (2026-11-17)
+
+- Chat **«Escribinos»** y **«Mi cuenta»** (contacto por WhatsApp, cómo llegar, redes e instalar la app en el celular), con el mismo kit que la tienda de Almacén RAVE (`fuente/capa-barberia/vb-kit.js`).
+- Productos: además de retirar en la sucursal, **envío a domicilio** con la dirección en el pedido de WhatsApp (el costo del envío lo confirma el local).
+- Prueba: `fuente/capa-barberia/pruebas/kit1.py <index.html>`.
+
 ## Cómo se compila
 `fuente/` es la fuente del Sistema VB (Almacén RAVE, V26.65) con la capa ya aplicada. La capa está en `fuente/capa-barberia/` (`patch_bc.py`, `p11-barber.js`, `p11-pub-barber.html`, `bc_brand.py`); para aplicarla a una fuente nueva: `python3 capa-barberia/patch_bc.py <fuente>`.
 

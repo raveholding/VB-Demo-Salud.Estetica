@@ -92,6 +92,8 @@ def brand(h):
         e+=2 if h[e]=='\\' else 1
     e+=1
     doc=open(os.path.join(HERE,'p11-pub-barber.html'),encoding='utf8').read().replace('__LOGO__',menu)
+    kit=os.path.join(HERE,'vb-kit.js')
+    if os.path.exists(kit): doc=doc.replace('/*VBKIT*/',open(kit,encoding='utf8').read()) # kit de tienda: chat y «Mi cuenta» (contacto, instalar la app)
     h=h[:k]+json.dumps(doc,ensure_ascii=False).replace('</','<\\/')+h[e:]
     # V27.7 · demo genérica de Vincular Business: sin la marca, direcciones ni teléfonos de un cliente real (sólo textos visibles)
     for o,n in [('Bacano Show Room · Barber Shop','Mi Barbería · Barbería y estética'),('SHOW ROOM · BARBER SHOP','BARBERÍA · ESTÉTICA'),('Show Room · Barber Shop','Barbería y estética'),

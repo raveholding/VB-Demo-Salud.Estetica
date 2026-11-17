@@ -3,7 +3,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#141414;--bg2:#1d1d1d;--card:#232323;--line:#333;--tx:#f4f1ec;--mut:#b9b2a8;--red:#d3263a;--red2:#ff4d61;--blue:#3b63d6;--fd:'Bebas Neue',Impact,'Arial Narrow',sans-serif;color-scheme:dark}
+:root{--fg:#f4f1ec;--acc:#d3263a;--on:#fff;--bg:#141414;--bg2:#1d1d1d;--card:#232323;--line:#333;--tx:#f4f1ec;--mut:#b9b2a8;--red:#d3263a;--red2:#ff4d61;--blue:#3b63d6;--fd:'Bebas Neue',Impact,'Arial Narrow',sans-serif;color-scheme:dark}
 *{box-sizing:border-box}html{scroll-behavior:smooth}html,body{margin:0;background:var(--bg);color:var(--tx)}
 body{font:400 15px/1.5 Poppins,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}
 a{color:inherit}button{font:inherit;cursor:pointer;color:inherit}
@@ -42,6 +42,7 @@ h2{font:400 46px/1 var(--fd);letter-spacing:.03em;margin:0 0 6px}.sub{color:var(
 .prod{display:flex;flex-direction:column;gap:6px}.prod .ph{height:120px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#2c2c2c,#1b1b1b);font:400 40px/1 var(--fd);color:#444;letter-spacing:.04em}
 .prod b{font-size:15.5px}.prod p{color:var(--mut);font-size:13px;margin:0;flex:1}.prod .pr{font-weight:700;font-size:17px}.av-ok{color:#5fd38a;font-size:12.5px}.av-low{color:#f2c46d;font-size:12.5px}.av-no{color:#ff8a8a;font-size:12.5px}
 .qty{display:flex;align-items:center;gap:8px}.qty button{width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);font-weight:700}
+.pdel{display:flex;align-items:center;gap:6px;font-size:14px;cursor:pointer}.pdel input{width:18px;height:18px;accent-color:var(--red)}.pdir{flex:1 1 100%;min-height:44px;padding:0 12px;border-radius:10px;border:1px solid var(--line);background:#000;color:var(--tx);font:inherit}
 .bar{position:sticky;bottom:0;z-index:15;background:#0e0e0e;border-top:1px solid var(--line);padding:10px 0}.bar .wrap{display:flex;gap:10px;align-items:center}
 .club{background:linear-gradient(135deg,#2a1014,#151a2e);border:1px solid #4a2a30}
 .stamps{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;max-width:320px;margin:14px 0}.stamps i{aspect-ratio:1;border-radius:50%;border:2px dashed #6c5a5d;display:grid;place-items:center;font-style:normal;font-size:20px}.stamps i.on{border:2px solid var(--red2);background:rgba(211,38,58,.25)}
@@ -92,7 +93,7 @@ footer{padding:34px 0 60px;text-align:center;color:var(--mut);font-size:13px}foo
 <footer><div class="wrap"><p><b>Bacano</b> · Show Room · Barber Shop · Salta Capital</p><p class="sm">Demo de evaluación: precios, barberos y turnos son de ejemplo.</p>
 <p class="sm">Desarrollado por <b>VINCULAR BUSINESS</b> · Celular (387) 4484132 · vincularbusiness@gmail.com<br><i>“Tu idea, en buenas manos.”</i></p>
 <p id="acc"><button class="btn ghost sm" data-a="panel">🔒 Acceso del equipo</button></p></div></footer>
-<div class="bar" id="pbar" hidden><div class="wrap"><span style="flex:1" id="pbar-t"></span><button class="btn sm" data-a="pclear">Vaciar</button><button class="btn red sm" data-a="psend">Enviar pedido</button></div></div>
+<div class="bar" id="pbar" hidden><div class="wrap" style="flex-wrap:wrap"><span style="flex:1;min-width:180px" id="pbar-t"></span><label class="pdel"><input type="checkbox" id="pdel"> 🛵 Envío a domicilio</label><input id="pdir" class="pdir" maxlength="90" placeholder="Calle, número y barrio" aria-label="Dirección de entrega" hidden><button class="btn sm" data-a="pclear">Vaciar</button><button class="btn red sm" data-a="psend">Enviar pedido</button></div></div>
 <div id="dlg"></div>
 <script>
 (function(){'use strict';
@@ -120,7 +121,7 @@ function render(){
 function renderProds(){var br=$('#pbr').value||C.brs[0].id;var L=C.prods.filter(function(p){return !pcat||p.cat===pcat;});
  $('#prods').innerHTML=L.map(function(p){var s=p.st[br]||0,q=pcart[p.id]||0;var av=s<=0?'<span class="av-no">Agotado en '+esc(brOf(br).short)+'</span>':s<=3?'<span class="av-low">Quedan '+s+' en '+esc(brOf(br).short)+'</span>':'<span class="av-ok">Disponible en '+esc(brOf(br).short)+'</span>';
   return '<div class="card prod"><div class="ph" aria-hidden="true">'+esc(p.n.split(' ')[0])+'</div><b>'+esc(p.n)+'</b><p>'+esc(p.d)+'</p>'+av+'<div style="display:flex;justify-content:space-between;align-items:center"><span class="pr">'+money(p.price)+'</span>'+(q?'<span class="qty"><button data-a="pq" data-id="'+p.id+'" data-v="-1" aria-label="Quitar uno">−</button><b>'+q+'</b><button data-a="pq" data-id="'+p.id+'" data-v="1" aria-label="Agregar uno"'+(q>=s?' disabled':'')+'>+</button></span>':'<button class="btn sm" data-a="pq" data-id="'+p.id+'" data-v="1"'+(s<=0?' disabled':'')+'>Agregar</button>')+'</div></div>';}).join('');
- var n=0,t=0;C.prods.forEach(function(p){var q=pcart[p.id]||0;n+=q;t+=q*p.price;});$('#pbar').hidden=!n;$('#pbar-t').innerHTML='<b>'+n+'</b> producto(s) · <b>'+money(t)+'</b> · retiro en '+esc(brOf(br).short);}
+ var n=0,t=0;C.prods.forEach(function(p){var q=pcart[p.id]||0;n+=q;t+=q*p.price;});$('#pbar').hidden=!n;var dl=$('#pdel')&&$('#pdel').checked;$('#pdir').hidden=!dl;$('#pbar-t').innerHTML='<b>'+n+'</b> producto(s) · <b>'+money(t)+'</b> · '+(dl?'envío a domicilio desde '+esc(brOf(br).short)+' (el costo te lo confirmamos)':'retiro en '+esc(brOf(br).short));}
 function renderClub(){var h='';if(ctab==='join'){h='<label for="cj-n">Nombre y apellido</label><input id="cj-n" maxlength="60" autocomplete="name"><label for="cj-w">WhatsApp</label><input id="cj-w" inputmode="tel" maxlength="20" placeholder="387 …"><label for="cj-b">Cumpleaños</label><input id="cj-b" type="date"><label for="cj-d">DNI (opcional)</label><input id="cj-d" inputmode="numeric" maxlength="9"><label class="chk"><input type="checkbox" id="cj-c" checked> Quiero recibir promos y recordatorios por WhatsApp</label><button class="btn red" style="width:100%;margin-top:12px" data-a="cjoin">Sumarme al Club</button><div id="cj-m"></div>';}
  else if(card){var s='';for(var i=0;i<card.goal;i++)s+='<i class="'+(i<card.stamps?'on':'')+'">'+(i<card.stamps?'✂':'')+'</i>';h='<div class="card" style="background:rgba(0,0,0,.3)"><b>'+esc(card.name)+'</b> · socio '+esc(card.num)+(card.tier?' · nivel '+esc(card.tier.name):'')+'<div class="stamps">'+s+'</div><p class="sm">'+card.stamps+' de '+card.goal+' sellos'+(card.rewards?' · <b>tenés '+card.rewards+' premio(s) para canjear</b>':'')+'</p>'+(card.member?'<p class="sm">Membresía '+esc(card.member.name)+' activa.</p>':'')+'<button class="btn sm" data-a="cout">Salir</button></div>';}
  else h='<p class="sm mut">Ingresá el WhatsApp y el cumpleaños con los que te sumaste.</p><label for="cl-w">WhatsApp</label><input id="cl-w" inputmode="tel" maxlength="20"><label for="cl-b">Cumpleaños</label><input id="cl-b" type="date"><button class="btn red" style="width:100%;margin-top:12px" data-a="clogin">Ver mi tarjeta</button><div id="cl-m"></div>';
@@ -164,17 +165,19 @@ document.addEventListener('click',function(e){var el=e.target.closest('[data-a]'
  if(a==='pcat'){pcat=el.dataset.v;render();return;}
  if(a==='pq'){var id=el.dataset.id;pcart[id]=Math.max(0,(pcart[id]||0)+(+el.dataset.v));if(!pcart[id])delete pcart[id];renderProds();return;}
  if(a==='pclear'){pcart={};renderProds();return;}
- if(a==='psend'){var br=$('#pbr').value;var r=P.order({br:br,lines:Object.keys(pcart).map(function(k){return {pid:k,qty:pcart[k]};})});if(!r.ok){alertBox(r.msg);return;}window.open(r.wa,'_blank','noopener');pcart={};renderProds();return;}
+ if(a==='psend'){var br=$('#pbr').value,dl=$('#pdel').checked,dir=$('#pdir').value.trim();if(dl&&dir.length<5){alertBox('Escribí la dirección de entrega (calle, número y barrio).');$('#pdir').focus();return;}var r=P.order({br:br,lines:Object.keys(pcart).map(function(k){return {pid:k,qty:pcart[k]};})});if(!r.ok){alertBox(r.msg);return;}var wu=r.wa;if(dl){try{var U=new URL(wu);U.searchParams.set('text',(U.searchParams.get('text')||'').replace('para retirar y pagar en el local','con envío a domicilio')+'\n\n🛵 Envío a domicilio: '+dir+'. ¿Cuánto sale el envío?');wu=U.toString();}catch(x){}}window.open(wu,'_blank','noopener');pcart={};renderProds();return;}
  if(a==='ctab'){ctab=el.dataset.v;renderClub();return;}
  if(a==='cjoin'){if(!R){return;}var r2=R.clubJoin({nombre:$('#cj-n').value,whatsapp:$('#cj-w').value,cumple:$('#cj-b').value,dni:$('#cj-d').value,comm:$('#cj-c').checked});$('#cj-m').innerHTML='<p class="msg '+(r2.ok?'ok':'err')+'">'+esc(r2.msg)+'</p>';if(r2.ok&&r2.cardId){card=R.card(r2.cardId);setTimeout(function(){ctab='card';renderClub();},1600);}return;}
  if(a==='clogin'){var id2=R&&R.cardLogin($('#cl-w').value,$('#cl-b').value);if(!id2){$('#cl-m').innerHTML='<p class="msg err">No encontramos un socio con esos datos.</p>';return;}card=R.card(id2);renderClub();return;}
  if(a==='cout'){card=null;renderClub();return;}
  if(a==='panel'){if(P)P.openPanel();return;}});
 function alertBox(m){$('#dlg').innerHTML='<div class="ov" data-a="bx"><div class="dlg" role="alertdialog" aria-modal="true"><p>'+esc(m)+'</p><div class="dfoot"><button class="btn red" data-a="bclose">Entendido</button></div></div></div>';}
-document.addEventListener('change',function(e){if(e.target.id==='pbr'){pcart={};renderProds();}});
+document.addEventListener('change',function(e){if(e.target.id==='pbr'){pcart={};renderProds();}if(e.target.id==='pdel'){renderProds();if(e.target.checked)setTimeout(function(){$('#pdir').focus();},0);}});
+window.VB_KIT={lift:function(){var b=$('#pbar');return b&&!b.hidden?b:null;}};
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&B)closeB();});
 window.RAVE_PUB_REFRESH=function(){try{C=P.ctx();render();if(B&&B.step<4)drawB();}catch(e){}};
 load();
 })();
 </script>
+<script>/*VBKIT*/</script>
 </body></html>
