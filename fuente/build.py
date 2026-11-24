@@ -21,9 +21,11 @@ import datetime
 if KINI: pub=os.environ.get('PUBLIC_URL','https://raveholding.github.io/KiniDistribuidoraDemo/')
 if PROFILE=='v3': pub=os.environ.get('PUBLIC_URL','https://raveholding.github.io/raveV3/')
 # V27.7 · barber = demo genérica «Mi Barbería» (raveholding/VB-Demo-Salud.Estetica)
-if PROFILE=='barber': pub=os.environ.get('PUBLIC_URL','https://raveholding.github.io/VB-Demo-Salud.Estetica/')
+MED=os.environ.get('VB_MED')=='1' and PROFILE=='barber'  # V27.33 · demo VB-CentrodeSalud sobre el mismo motor de turnos
+if PROFILE=='barber': pub=os.environ.get('PUBLIC_URL','https://raveholding.github.io/VB-CentrodeSalud/' if MED else 'https://raveholding.github.io/VB-Demo-Salud.Estetica/')
 build={'ver':datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d %H:%M')+' UTC','variant':V,'db':'rave-almacenrave-v1' if V=='cliente' else {'kini':'rave-kini-demo-v2','solo':'rave-solo-demo-v1','v3':'rave-v3-demo-v2','barber':'vb-demo-salud-estetica-v1'}.get(PROFILE,'rave-cliente-v3'),'publicUrl':pub}
 if PROFILE: build['profile']=PROFILE
+if MED: build['db']='vb-centrodesalud-v1';build['med']=1
 cfg='<script>window.RAVE_BUILD=%s;window.RAVE_CLOUD=%s;</script>\n'%(json.dumps(build),json.dumps({'url':url,'key':key,'slug':slug}))
 # V27.6 aislar: cada demo usa sus propios nombres de datos, canales y caché del celular
 if V=='demo': cfg=cfg.replace('</script>',"(function(){/* V27.6 · Cada demo guarda lo suyo: todas comparten raveholding.github.io y sin esto se mezclan datos entre demos (y con un sistema real abierto en el mismo navegador). */var B=window.RAVE_BUILD;if(!B||B.variant!=='demo'||window.__vbNS)return;var ns=window.__vbNS=B.db+'|';try{var S=Storage.prototype,g=S.getItem,s=S.setItem,r=S.removeItem,P=function(st,x){x=String(x);return st===window.localStorage&&x.indexOf(ns)!==0?ns+x:x};S.getItem=function(x){return g.call(this,P(this,x))};S.setItem=function(x,v){return s.call(this,P(this,x),v)};S.removeItem=function(x){return r.call(this,P(this,x))};}catch(e){}try{var I=window.indexedDB,o=I.open.bind(I),d=I.deleteDatabase.bind(I),N=function(n){n=String(n);return n===B.db||n.indexOf(ns)===0?n:ns+n};I.open=function(n,v){return v===undefined?o(N(n)):o(N(n),v)};I.deleteDatabase=function(n){return d(N(n))};}catch(e){}try{var BC=window.BroadcastChannel;if(BC){var W=function(n){return new BC(ns+n)};W.prototype=BC.prototype;window.BroadcastChannel=W;}}catch(e){}})();"+'</script>',1)
@@ -54,6 +56,10 @@ if os.path.exists('p27-prv-pro.js') and 'p4d-compras-ui.js' in parts: parts.inse
 # V27.25 · Atención al cliente: Hoy, Agenda y Pipeline (puerto desde AlmacenRAVE)
 if os.path.exists('p26-crm-pro.js') and 'p6j-crm.js' in parts and 'p5c-menusec.js' in parts: parts.insert(parts.index('p5c-menusec.js'),'p26-crm-pro.js')
 if PROFILE=='barber': parts.insert(parts.index('p5c-menusec.js'),'p11-barber.js')
+# V27.31 · rubros del local de turnos (barbería, peluquería, estética, uñas, tatuajes, consultorio) y fichas
+if PROFILE=='barber' and os.path.exists('p11f-rubros.js'): parts.insert(parts.index('p11-barber.js')+1,'p11f-rubros.js')
+if PROFILE=='barber' and os.path.exists('p11g-pro.js'): parts.insert(parts.index('p11f-rubros.js')+1,'p11g-pro.js')
+if MED: parts.insert(parts.index('p11g-pro.js')+1,'p11h-salud.js')
 # V26.37 · Centro Inteligente (p10-centro.js): módulo aislado.
 # V26.40: aprobado por el dueño para Almacén RAVE (apagado por defecto; lo activa el administrador). Kini no lo lleva salvo CI=1.
 # raveV2 (solo) y Kini no llevan el Centro Inteligente: es de raveV3 y de Almacén RAVE (apagado)
@@ -137,6 +143,9 @@ if PROFILE=='barber':
     sys.path.insert(0,os.path.join(os.path.dirname(os.path.abspath(__file__)),'capa-barberia'))
     import bc_brand
     html=bc_brand.brand(html)
+    if MED:
+        import med_brand
+        html=med_brand.brand(html)
 open(out,'w',encoding='utf8').write(html)
 m=re.search(r'\n<script>\n(.*?)\n</script>\n</body>',html,re.S)
 open('all.js','w',encoding='utf8').write(m.group(1))

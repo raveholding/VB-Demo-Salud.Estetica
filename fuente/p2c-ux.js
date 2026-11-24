@@ -35,7 +35,7 @@ const UX_SEC_OF={inicio:'Resumen',centro:'Resumen',pedidos:'Operación comercial
  inventario:'Logística e inventario',mermas:'Logística e inventario',presup:'Logística e inventario',proveedores:'Logística e inventario',
  clientes:'Clientes',fidel:'Clientes',fidplus:'Clientes',monedero:'Clientes',cupones:'Clientes',crm:'Clientes',personal:'Equipo',rrhh:'Equipo',portal:'Equipo',tareas:'Equipo',menuadmin:'Menú y web',legal:'Menú y web'};
 const UX_TITLE={inventario:'Stock e inventario',pedidos:'PedidosYa',presup:'Presupuestos',proveedores:'Proveedores',mermas:'Mermas y devoluciones'};
-const uxSecName=k=>k==='Clientes'?(IS_CLIENT?'Clientes y Club RAVE':'Clientes y fidelidad'):k;
+const uxSecName=k=>(window.uxSecHook&&window.uxSecHook(k))||(k==='Clientes'?(IS_CLIENT?'Clientes y Club RAVE':'Clientes y fidelidad'):k);
 const uxSecOf=(k,secOf)=>{if(UX_SEC_OF[k])return UX_SEC_OF[k];const n=secOf[k]||'Otros';return n==='Operación'?'Operación comercial':n==='Clientes y fidelización'?'Clientes':UX_SEC_ORDER.includes(n)?n:(n||'Otros');};
 const uxFold=()=>{try{return JSON.parse(localStorage.getItem('rave.sidefold')||'[]');}catch(e){return[];}};
 A.uxSec=el=>{const k=el.dataset.s;let f=uxFold();f=f.includes(k)?f.filter(x=>x!==k):f.concat(k);try{localStorage.setItem('rave.sidefold',JSON.stringify(f));}catch(e){}

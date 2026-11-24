@@ -70,7 +70,7 @@ def brand(h):
     h=h.replace('name="theme-color" content="#242220"','name="theme-color" content="#141414"',1)
     h=re.sub(r'<link rel="icon" href="[^"]*"','<link rel="icon" href="%s"'%icon,h,count=1)
     h=h.replace('style="width:48px;height:27px;object-fit:cover;border-radius:6px"','style="width:40px;height:40px;object-fit:cover;border-radius:50%"')
-    h=h.replace('<span>Sistema RAVE</span></a>','<span>Bacano</span></a>',1)
+    h=h.replace('<span>Sistema RAVE</span></a>','<span>${esc((S.tenant&&S.tenant.name)||"Bacano")}</span></a>',1)
     h=h.replace('Sistema RAVE','Sistema VB').replace('alt="RAVE"','alt="Bacano Show Room · Barber Shop"')
     h=re.sub(r'<title>[^<]*</title>','<title>Bacano · Show Room · Barber Shop · Sistema VB · demo</title>',h,count=1)
     h=h.replace("club:{t:()=>IS_CLIENT?'Club RAVE':'Club de clientes'","club:{t:()=>'Club Bacano'",1)

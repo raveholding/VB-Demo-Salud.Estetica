@@ -104,7 +104,12 @@ var money=function(v){return '$ '+Math.round(v).toLocaleString('es-AR');};
 var ini=function(n){var p=String(n||'?').split(' ');return (p[0][0]||'')+((p[1]||'')[0]||'');};
 var C=null,pcat='',pcart={},B=null,ctab='join',card=null;
 if(window.__BCEMBED){var a=$('#acc');if(a)a.hidden=true;}
-function load(){if(!P){document.body.insertAdjacentHTML('afterbegin','<p style="padding:12px;background:#8c2532;margin:0">Abrí la página desde el sistema para ver los datos.</p>');return;}C=P.ctx();render();}
+/* V27.31 · palabras del rubro (peluquería, spa, uñas, tatuajes, consultorio) */
+function rwDoc(root){if(!C||!C.rw||!C.rw.length)return;var w=document.createTreeWalker(root||document.body,NodeFilter.SHOW_TEXT,null),n,L=[];while((n=w.nextNode()))L.push(n);
+ L.forEach(function(t){var v=t.nodeValue,o=v;C.rw.forEach(function(p){if(o.indexOf(p[0])>=0)o=o.split(p[0]).join(p[1]);});if(o!==v)t.nodeValue=o;});
+ if(C.rub&&C.rub.ten&&document.title.indexOf(C.rub.ten)<0)document.title=C.rub.ten+' · Turnos online';}
+var rwObs=null;function rwWatch(){rwDoc();if(rwObs||!window.MutationObserver)return;rwObs=new MutationObserver(function(){rwDoc();});rwObs.observe(document.body,{childList:true,subtree:true});}
+function load(){if(!P){document.body.insertAdjacentHTML('afterbegin','<p style="padding:12px;background:#8c2532;margin:0">Abrí la página desde el sistema para ver los datos.</p>');return;}C=P.ctx();render();rwWatch();}
 function brOf(id){for(var i=0;i<C.brs.length;i++)if(C.brs[i].id===id)return C.brs[i];return null;}
 function svcOf(id){for(var i=0;i<C.svcs.length;i++)if(C.svcs[i].id===id)return C.svcs[i];return null;}
 function render(){
@@ -175,7 +180,7 @@ function alertBox(m){$('#dlg').innerHTML='<div class="ov" data-a="bx"><div class
 document.addEventListener('change',function(e){if(e.target.id==='pbr'){pcart={};renderProds();}if(e.target.id==='pdel'){renderProds();if(e.target.checked)setTimeout(function(){$('#pdir').focus();},0);}});
 window.VB_KIT={lift:function(){var b=$('#pbar');return b&&!b.hidden?b:null;}};
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&B)closeB();});
-window.RAVE_PUB_REFRESH=function(){try{C=P.ctx();render();if(B&&B.step<4)drawB();}catch(e){}};
+window.RAVE_PUB_REFRESH=function(){try{C=P.ctx();render();rwDoc();if(B&&B.step<4)drawB();}catch(e){}};
 load();
 })();
 </script>
