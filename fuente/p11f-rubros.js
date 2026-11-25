@@ -47,7 +47,7 @@ const RK=()=>{const d=window.VB_MED?'medico':'estetica'; /* la demo abre como sp
 const RP=()=>R[RK()];
 window.bcRub=RK;
 /* ---------- palabras ---------- */
-function pairs(){const P=RP();if(RK()==='barberia')return[];const t=P.ten;return[['Mi Barbería · Barbería y estética',t],['Mi Barbería',t],['MI BARBERÍA',t.toUpperCase()],['Barbería y estética',P.t],['BARBERÍA · ESTÉTICA',P.t.toUpperCase()],
+function pairs(){const P=RP();if(RK()==='barberia')return[];const t=P.ten;return[['Mi Barbería · Barbería y estética',t],['Mi Barbería',t],['MI BARBERÍA',t.toUpperCase()],['Barbería y estética',P.t],['BARBERÍA · ESTÉTICA',(P.sub||P.t).toUpperCase()],
  ['Barberos',cap(P.pros)],['barberos',P.pros],['Barbero',cap(P.pro)],['barbero',P.pro],...(P.pac?[['Clientes','Pacientes'],['clientes','pacientes'],['Cliente','Paciente'],['cliente','paciente']]:[]),['la barbería',(P.locArt||(P.loc==='spa'||P.loc==='estudio'?'el':'la'))+' '+P.loc],['La barbería',cap(P.locArt||(P.loc==='spa'||P.loc==='estudio'?'el':'la'))+' '+P.loc],['las sillas',(P.puArt==='el'?'los ':'las ')+P.pus],['la silla',(P.puArt||'la')+' '+P.pu],['Las sillas',(P.puArt==='el'?'Los ':'Las ')+P.pus],['La silla',cap(P.puArt||'la')+' '+P.pu],['Barbería',cap(P.loc)],['barbería',P.loc],['Sillas',cap(P.pus)],['sillas',P.pus],['Silla',cap(P.pu)],['silla',P.pu],['Tu corte,','Tu turno,'],['tu corte','tu servicio'],['💈',P.ico],['cortes',P===R.consultorio?'sesiones':'servicios'],['corte gratis',P.premio.toLowerCase()]];}
 function rw(s){if(typeof s!=='string'||RK()==='barberia')return s;let o=s;pairs().forEach(([a,b])=>{o=o.split(a).join(b);});return o;}
 window.bcRw=rw;
@@ -64,12 +64,16 @@ try{let q=0;new MutationObserver(M=>{if(q)return;q=1;requestAnimationFrame(()=>{
 const noAsis=()=>{try{S.cfg.assistant={on:false,voice:false,tts:false};}catch(e){}};
 try{assistCfgCard=function(){return '';};}catch(e){}try{asBtn=function(){return '';};}catch(e){}
 /* emblema, color y título del rubro (la barbería conserva su logo original) */
-function logoURI(P){if(!P||!P.emo)return'';const n=String(P.ten).replace(/^Mi /,'').toUpperCase();const sz=n.length>14?26:n.length>9?32:40;
- const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320"><rect width="320" height="320" rx="64" fill="#141414"/><circle cx="160" cy="128" r="84" fill="none" stroke="${P.acc}" stroke-width="12"/><text x="160" y="160" font-size="92" text-anchor="middle">${P.emo}</text><text x="160" y="262" font-family="Arial,Helvetica,sans-serif" font-size="${sz}" font-weight="700" fill="#fff" text-anchor="middle">MI</text><text x="160" y="${262+sz}" font-family="Arial,Helvetica,sans-serif" font-size="${sz}" font-weight="700" fill="${P.acc}" text-anchor="middle">${n}</text></svg>`;
+function logoURI(P){if(!P||!P.emo)return'';const W=String(P.ten).replace(/^Mi /,'').toUpperCase().split(' ');
+ /* nombre en una o dos líneas, con el tamaño que entra en el emblema */
+ let L=[W.join(' ')];if(L[0].length>11&&W.length>1){let best=null;for(let i=1;i<W.length;i++){const a=W.slice(0,i).join(' '),b=W.slice(i).join(' ');const m=Math.max(a.length,b.length);if(!best||m<best[2])best=[a,b,m];}L=[best[0],best[1]];}
+ const mx=Math.max(...L.map(x=>x.length));const sz=Math.max(18,Math.min(40,Math.floor(270/(mx*0.68))));const y0=L.length>1?238:262;
+ const tx=L.map((t,i)=>`<text x="160" y="${y0+(i+1)*(sz+4)}" font-family="Arial,Helvetica,sans-serif" font-size="${sz}" font-weight="700" fill="${i===L.length-1?P.acc:'#fff'}" text-anchor="middle">${t.replace(/&/g,'&amp;')}</text>`).join('');
+ const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320"><rect width="320" height="320" rx="64" fill="#141414"/><circle cx="160" cy="${L.length>1?112:128}" r="${L.length>1?76:84}" fill="none" stroke="${P.acc}" stroke-width="12"/><text x="160" y="${L.length>1?142:160}" font-size="${L.length>1?82:92}" text-anchor="middle">${P.emo}</text><text x="160" y="${y0}" font-family="Arial,Helvetica,sans-serif" font-size="22" font-weight="700" fill="#cfcfcf" text-anchor="middle">MI</text>${tx}</svg>`;
  return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);}
 window.bcLogo=()=>logoURI(RP());
-function paintRub(){try{const P=RP(),de=document.documentElement;if(P.acc){de.style.setProperty('--gold',P.acc);de.style.setProperty('--gold2',P.acc);}else if(!window.VB_MED){de.style.removeProperty('--gold');de.style.removeProperty('--gold2');}
- if(!window.VB_MED&&S.tenant&&S.tenant.name)document.title=S.tenant.name+' · '+P.t+' · Sistema VB (demo)';
+function paintRub(){try{const P=RP(),de=document.documentElement;if(P.acc){de.style.setProperty('--gold',P.acc);de.style.setProperty('--gold2',P.acc);}else{de.style.removeProperty('--gold');de.style.removeProperty('--gold2');}
+ if(S.tenant&&S.tenant.name)document.title=S.tenant.name+' · '+P.t+' · Sistema VB (demo)';
  const L=logoURI(P);if(L&&typeof LOGO_MENU!=='undefined')document.querySelectorAll('img').forEach(i=>{if(i.getAttribute('src')===LOGO_MENU||i.dataset.rubLogo){i.dataset.rubLogo=1;if(i.getAttribute('src')!==L)i.setAttribute('src',L);}});
  if(!L)document.querySelectorAll('img[data-rub-logo]').forEach(i=>{if(typeof LOGO_MENU!=='undefined')i.setAttribute('src',LOGO_MENU);delete i.dataset.rubLogo;});}catch(e){}}
 window.uxSecHook=k=>k==='Barbería'&&RK()!=='barberia'?cap(RP().loc):'';
@@ -118,7 +122,7 @@ document.addEventListener('change',e=>{const x=e.target;if(!x||!x.classList||!x.
 if(SCREENS.bchoy){const _h=SCREENS.bchoy.render;SCREENS.bchoy.render=function(){const h=_h.apply(this,arguments);if(!can('config'))return h;return `<div class="card row" style="flex-wrap:wrap;gap:.5rem;align-items:center;margin-bottom:.6rem">${SEL()}<span class="sm mut">Demo: cambiá el rubro y el sistema se adapta (servicios, equipo, fichas y turnero).</span></div>`+h;};}
 if(SCREENS.config){const _c=SCREENS.config.render;SCREENS.config.render=function(){const h=_c.apply(this,arguments);const card=`<div class="card" style="margin:1rem 0"><h2>Rubro del local</h2><p class="sm mut">Elegí el tipo de local: cambian los servicios, las palabras del sistema, las fichas de clientes y el turnero web.</p>${SEL()}</div>`;const i=h.indexOf('</h1>');return i<0?card+h:h.slice(0,i+5)+card+h.slice(i+5);};}
 /* turnero web: palabras del rubro */
-if(window.BC_API&&BC_API.ctx){const _x=BC_API.ctx;BC_API.ctx=function(){try{ensure();}catch(e){}const c=_x.apply(this,arguments);try{c.rw=pairs();c.rub={k:RK(),t:RP().t,ten:RP().ten,ico:RP().ico,acc:RP().acc||'',logo:logoURI(RP())};}catch(e){}return c;};}
+if(window.BC_API&&BC_API.ctx){const _x=BC_API.ctx;BC_API.ctx=function(){try{ensure();}catch(e){}const c=_x.apply(this,arguments);try{c.rw=pairs();c.rub={k:RK(),t:RP().t,ten:RP().ten,ico:RP().ico,acc:RP().acc||'',logo:logoURI(RP())};if(Array.isArray(c.cats))c.cats=c.cats.map(x=>{const r=(S.rubros||[]).find(z=>z.id===x.id);return Object.assign({},x,{n:r&&RK()!=='barberia'?r.name:x.n});});}catch(e){}return c;};}
 
 /* =====================================================================
    FICHAS: lo propio de cada rubro
