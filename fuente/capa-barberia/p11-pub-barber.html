@@ -105,7 +105,12 @@ var ini=function(n){var p=String(n||'?').split(' ');return (p[0][0]||'')+((p[1]|
 var C=null,pcat='',pcart={},B=null,ctab='join',card=null;
 if(window.__BCEMBED){var a=$('#acc');if(a)a.hidden=true;}
 /* V27.31 · palabras del rubro (peluquería, spa, uñas, tatuajes, consultorio) */
-function rwDoc(root){if(!C||!C.rw||!C.rw.length)return;var w=document.createTreeWalker(root||document.body,NodeFilter.SHOW_TEXT,null),n,L=[];while((n=w.nextNode()))L.push(n);
+function rubPaint(){if(!C||!C.rub)return;var r=C.rub,de=document.documentElement;if(r.acc){de.style.setProperty('--acc',r.acc);de.style.setProperty('--red',r.acc);de.style.setProperty('--red2',r.acc);}
+ if(r.logo){if(!window._lg0){var h0=document.querySelector('.hero img');if(h0&&!h0.getAttribute('data-rl'))window._lg0=h0.getAttribute('src');}
+ [].forEach.call(document.querySelectorAll('img'),function(i){if(!(i.getAttribute('data-rl')||(window._lg0&&i.getAttribute('src')===window._lg0)))return;i.setAttribute('data-rl','1');if(i.getAttribute('src')!==r.logo){i.setAttribute('src',r.logo);i.setAttribute('alt',r.ten);}});}
+ if(r.acc&&!document.getElementById('rub-css')){var st=document.createElement('style');st.id='rub-css';document.head.appendChild(st);}if(r.acc){document.getElementById('rub-css').textContent='.hero,header.hero,section.hero{background-image:radial-gradient(60% 80% at 80% 0%,'+r.acc+'33,transparent 70%)!important}.svc>.row:first-child{flex-wrap:wrap;gap:4px 10px}.svc .pr{white-space:nowrap}';}
+ var p=document.querySelector('.pole');if(p&&r.acc)p.style.background='linear-gradient(90deg,'+r.acc+',transparent)';}
+function rwDoc(root){rubPaint();if(!C||!C.rw||!C.rw.length)return;var w=document.createTreeWalker(root||document.body,NodeFilter.SHOW_TEXT,null),n,L=[];while((n=w.nextNode()))L.push(n);
  L.forEach(function(t){var v=t.nodeValue,o=v;C.rw.forEach(function(p){if(o.indexOf(p[0])>=0)o=o.split(p[0]).join(p[1]);});if(o!==v)t.nodeValue=o;});
  if(C.rub&&C.rub.ten&&document.title.indexOf(C.rub.ten)<0)document.title=C.rub.ten+' · Turnos online';}
 var rwObs=null;function rwWatch(){rwDoc();if(rwObs||!window.MutationObserver)return;rwObs=new MutationObserver(function(){rwDoc();});rwObs.observe(document.body,{childList:true,subtree:true});}
