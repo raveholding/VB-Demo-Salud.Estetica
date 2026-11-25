@@ -73,7 +73,7 @@ function logoURI(P){if(!P||!P.emo)return'';const W=String(P.ten).replace(/^Mi /,
  return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);}
 window.bcLogo=()=>logoURI(RP());
 function paintRub(){try{const P=RP(),de=document.documentElement;if(P.acc){de.style.setProperty('--gold',P.acc);de.style.setProperty('--gold2',P.acc);}else{de.style.removeProperty('--gold');de.style.removeProperty('--gold2');}
- if(S.tenant&&S.tenant.name)document.title=S.tenant.name+' · '+P.t+' · Sistema VB (demo)';
+ if(S.tenant&&S.tenant.name){const tn=(RK()!=='barberia'&&/barber/i.test(S.tenant.name))?P.ten:S.tenant.name;document.title=tn+' · '+P.t+' · Sistema VB (demo)';}
  const L=logoURI(P);if(L&&typeof LOGO_MENU!=='undefined')document.querySelectorAll('img').forEach(i=>{if(i.getAttribute('src')===LOGO_MENU||i.dataset.rubLogo){i.dataset.rubLogo=1;if(i.getAttribute('src')!==L)i.setAttribute('src',L);}});
  if(!L)document.querySelectorAll('img[data-rub-logo]').forEach(i=>{if(typeof LOGO_MENU!=='undefined')i.setAttribute('src',LOGO_MENU);delete i.dataset.rubLogo;});}catch(e){}}
 window.uxSecHook=k=>k==='Barbería'&&RK()!=='barberia'?cap(RP().loc):'';
